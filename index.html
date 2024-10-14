@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorteador de Números</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sorteador de Números</h1>
+            <p>Defina o intervalo e a quantidade de números a serem sorteados. Clique em "Sortear" e veja o resultado!</p>
+        </header>
+
+        <form id="sorteador-form">
+            <div class="input-group">
+                <label for="quantidade">Quantidade de Números</label>
+                <input type="number" id="quantidade" min="1" placeholder="Ex.: 5" required>
+            </div>
+
+            <div class="range-container">
+                <div class="input-group">
+                    <label for="numero-min">De</label>
+                    <input type="number" id="numero-min" placeholder="Número mínimo" required>
+                </div>
+                <div class="input-group">
+                    <label for="numero-max">Até</label>
+                    <input type="number" id="numero-max" placeholder="Número máximo" required>
+                </div>
+            </div>
+
+            <div class="input-group checkbox-group">
+                <input type="checkbox" id="nao-repetir" checked>
+                <label for="nao-repetir">Não repetir número</label>
+            </div>
+
+            <button type="submit" class="btn-sortear">Sortear</button>
+        </form>
+
+        <div class="resultado" id="resultado">
+            <h2>Resultado:</h2>
+            <p id="numeros-sorteados">Os números sorteados aparecerão aqui.</p>
+        </div>
+
+        <footer>
+            <p>Realizado para sorteios online. 2024</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
