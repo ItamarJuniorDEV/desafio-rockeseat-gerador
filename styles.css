@@ -5,11 +5,26 @@
     box-sizing: border-box;
 }
 
+:root {
+    --bg-color: #0a0a0a;
+    --text-color: #ffffff;
+    --primary-color: #4ecdc4;
+    --secondary-color: #1e1e1e;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #0a0a0a;
-    color: #ffffff;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     line-height: 1.6;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.light-theme {
+    --bg-color: #f0f0f0;
+    --text-color: #333333;
+    --primary-color: #3a9d95;
+    --secondary-color: #ffffff;
 }
 
 /* Container principal */
@@ -20,7 +35,7 @@ body {
     justify-content: center;
     min-height: 100vh;
     padding: 2rem;
-    background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+    background: linear-gradient(135deg, var(--bg-color) 0%, var(--secondary-color) 100%);
 }
 
 /* Cabeçalho */
@@ -32,21 +47,21 @@ header {
 
 header h1 {
     font-size: 3rem;
-    color: #4ecdc4;
+    color: var(--primary-color);
     margin-bottom: 1rem;
     text-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
 }
 
 header p {
     font-size: 1.1rem;
-    color: #e0e0e0;
+    color: var(--text-color);
     max-width: 600px;
     margin: 0 auto;
 }
 
 /* Formulário */
 form {
-    background-color: #1e1e1e;
+    background-color: var(--secondary-color);
     padding: 2rem;
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -63,7 +78,7 @@ form {
     display: block;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: #4ecdc4;
+    color: var(--primary-color);
 }
 
 .input-group input[type="number"] {
@@ -72,13 +87,13 @@ form {
     font-size: 1rem;
     border: 2px solid #333;
     border-radius: 8px;
-    background-color: #2c2c2c;
-    color: #ffffff;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     transition: all 0.3s ease;
 }
 
 .input-group input[type="number"]:focus {
-    border-color: #4ecdc4;
+    border-color: var(--primary-color);
     outline: none;
     box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.3);
 }
@@ -111,7 +126,7 @@ form {
     cursor: pointer;
     font-size: 1rem;
     user-select: none;
-    color: #e0e0e0;
+    color: var(--text-color);
 }
 
 .checkbox-group label:before {
@@ -121,14 +136,14 @@ form {
     top: 0;
     width: 25px;
     height: 25px;
-    border: 2px solid #4ecdc4;
-    background-color: #2c2c2c;
+    border: 2px solid var(--primary-color);
+    background-color: var(--bg-color);
     border-radius: 5px;
     transition: all 0.3s ease;
 }
 
 .checkbox-group input[type="checkbox"]:checked + label:before {
-    background-color: #4ecdc4;
+    background-color: var(--primary-color);
 }
 
 .checkbox-group label:after {
@@ -137,7 +152,7 @@ form {
     top: 2px;
     left: 7px;
     font-size: 18px;
-    color: #2c2c2c;
+    color: var(--bg-color);
     transition: all 0.3s ease;
     opacity: 0;
 }
@@ -148,8 +163,8 @@ form {
 
 /* Botão */
 .btn-sortear {
-    background-color: #4ecdc4;
-    color: #1e1e1e;
+    background-color: var(--primary-color);
+    color: var(--bg-color);
     font-size: 1.2rem;
     font-weight: 600;
     padding: 1rem 2rem;
@@ -193,7 +208,7 @@ form {
 /* Resultado */
 .resultado {
     text-align: center;
-    background-color: #1e1e1e;
+    background-color: var(--secondary-color);
     padding: 2rem;
     border-radius: 15px;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
@@ -218,30 +233,90 @@ form {
 
 .resultado h2 {
     font-size: 2rem;
-    color: #4ecdc4;
+    color: var(--primary-color);
     margin-bottom: 1rem;
     position: relative;
 }
 
 .resultado p {
     font-size: 1.4rem;
-    color: #ffffff;
+    color: var(--text-color);
     position: relative;
+}
+
+/* Histórico */
+.historico {
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 500px;
+}
+
+.historico h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.historico ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.historico li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.historico li:hover {
+    transform: translateX(5px);
+}
+
+.btn-excluir, .btn-limpar {
+    background-color: #ff4757;
+    color: white;
+    border: none;
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-excluir:hover, .btn-limpar:hover {
+    background-color: #ff6b6b;
+}
+
+.btn-limpar {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.5rem;
 }
 
 /* Rodapé */
 footer {
     margin-top: 2rem;
     text-align: center;
-    color: #e0e0e0;
+    color: var(--text-color);
     font-size: 0.9rem;
 }
 
-.heart {
-    color: #ff4081;
-    font-size: 1.2rem;
-    animation: heartbeat 1.5s ease-in-out infinite;
-    display: inline-block;
+.btn-theme {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.btn-theme:hover {
+    background-color: #45b7b0;
 }
 
 /* Animações */
@@ -266,10 +341,14 @@ footer {
     100% { transform: scale(1); opacity: 0.6; }
 }
 
-@keyframes heartbeat {
+@keyframes destaque {
     0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
+    50% { transform: scale(1.1); }
     100% { transform: scale(1); }
+}
+
+.resultado-final {
+    animation: destaque 0.5s ease-in-out;
 }
 
 /* Responsividade */

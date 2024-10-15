@@ -6,10 +6,18 @@ const resultado = document.getElementById('resultado');
 const sorteadorForm = document.getElementById('sorteador-form');
 const botaoSortear = document.getElementById('btn-sortear');
 const numerosSorteados = document.getElementById('numeros-sorteados');
+const listaHistorico = document.getElementById('lista-historico');
+const toggleThemeButton = document.getElementById('toggle-theme');
+
+let audioSuspense;
 
 sorteadorForm.addEventListener('submit', (e) => {
   e.preventDefault();
   sortearNumeros();
+});
+
+toggleThemeButton.addEventListener('click', () => {
+  document.body.classList.toggle('light-theme');
 });
 
 function sortearNumeros() {
@@ -35,6 +43,7 @@ function sortearNumeros() {
 
   const numeros = sortearNumerosUnicos(quantidade, min, max, repetir);
   exibirNumerosSorteados(numeros);
+  adicionarAoHistorico(numeros);
 }
 
 function sortearNumerosUnicos(quantidade, min, max, repetir) {
@@ -45,12 +54,15 @@ function sortearNumerosUnicos(quantidade, min, max, repetir) {
       numeros.add(numero);
     }
   }
+  
   return Array.from(numeros);
 }
 
 function exibirNumerosSorteados(numeros) {
   numerosSorteados.textContent = 'Sorteando...';
   botaoSortear.disabled = true;
+
+  iniciarSomSuspense();
 
   let indice = 0;
   const intervalId = setInterval(() => {
@@ -59,7 +71,84 @@ function exibirNumerosSorteados(numeros) {
       indice++;
     } else {
       clearInterval(intervalId);
-      botaoSortear.disabled = false;
+      finalizarSorteio();
     }
   }, 1000);
 }
+
+function finalizarSorteio() {
+  botaoSortear.disabled = false;
+  numerosSorteados.classList.add('resultado-final');
+  setTimeout(() => numerosSorteados.classList.remove('resultado-final'), 1000);
+  pararSomSuspense();
+  reproduzirSomFinal();
+}
+
+function adicionarAoHistorico(numeros) {
+  const li = document.createElement('li');
+  const span = document.createElement('span');
+  span.textContent = numeros.join(', ');
+  
+  const btnExcluir = document.createElement('button');
+  btnExcluir.textContent = 'Excluir';
+  btnExcluir.classList.add('btn-excluir');
+  btnExcluir.addEventListener('click', () => excluirDoHistorico(li));
+
+  li.appendChild(span);
+  li.appendChild(btnExcluir);
+  listaHistorico.insertBefore(li, listaHistorico.firstChild);
+
+  if (listaHistorico.children.length > 5) {
+    listaHistorico.removeChild(listaHistorico.lastChild);
+  }
+
+  salvarHistorico();
+}
+
+function excluirDoHistorico(item) {
+  listaHistorico.removeChild(item);
+  salvarHistorico();
+}
+
+function limparHistorico() {
+  listaHistorico.innerHTML = '';
+  salvarHistorico();
+}
+
+document.getElementById('limpar-historico').addEventListener('click', limparHistorico);
+
+function salvarHistorico() {
+  const historico = Array.from(listaHistorico.children).map(li => li.querySelector('span').textContent.split(', ').map(Number));
+  localStorage.setItem('historicoSorteios', JSON.stringify(historico));
+}
+
+function iniciarSomSuspense() {
+  audioSuspense = new Audio('sounds/suspense.mp3');
+  audioSuspense.loop = true;
+  audioSuspense.volume = 0.5; // Ajuste o volume conforme necessário
+  audioSuspense.play().catch(error => console.error('Erro ao reproduzir o som de suspense:', error));
+}
+
+function pararSomSuspense() {
+  if (audioSuspense) {
+    audioSuspense.pause();
+    audioSuspense.currentTime = 0;
+  }
+}
+
+function reproduzirSomFinal() {
+  const audioFinal = new Audio('sounds/sorteio.mp3');
+  audioFinal.volume = 0.7; // Ajuste o volume conforme necessário
+  audioFinal.play().catch(error => console.error('Erro ao reproduzir o som final:', error));
+}
+
+window.addEventListener('load', () => {
+  const historico = JSON.parse(localStorage.getItem('historicoSorteios')) || [];
+  historico.forEach(numeros => adicionarAoHistorico(numeros));
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && document.activeElement === botaoSortear) {
+    sortearNumeros();
+  }
+});
